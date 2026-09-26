@@ -382,7 +382,7 @@ public static partial class FactorioDataSource {
         // successfully and correctly", and the change is not accompanied by a change to the Mod-fixes folder or the types, fields, or
         // loadDataParameters static fields.
         // If the Lua previously didn't load at all, the version should not be updated.
-        protected override int DataVersion => 0;
+        protected override int DataVersion => 1;
         protected override string FileExtension => "csharpcache";
 
         private static readonly List<Type> types = [.. typeof(FactorioObject).Assembly.GetTypes()

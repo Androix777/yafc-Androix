@@ -271,11 +271,19 @@ internal partial class FactorioDataDeserializer {
                 boiler.fluidInputs = 1;
                 bool hasOutput = table.Get("mode", out string? mode) && mode == "output-to-separate-pipe";
                 _ = GetFluidBoxFilter(table, "fluid_box", 0, out Fluid? input, out var acceptTemperature);
-                _ = table.Get("target_temperature", out int targetTemp);
-                Fluid? output = hasOutput ? GetFluidBoxFilter(table, "output_fluid_box", targetTemp, out var fluid, out _) ? fluid : null : input;
+                int targetTemp = !hasOutput && factorioVersion >= v2_1
+                    ? input?.temperatureRange.max ?? 0 : table.Get("target_temperature", 0);
+                Fluid? output = hasOutput ? GetFluidBoxFilter(table, "output_fluid_box", targetTemp, out var fluid, out _) ? fluid : null
+                    : input == null ? null : GetFluidFixedTemp(input.name, targetTemp);
 
                 if (input == null || output == null) { // TODO - boiler works with any fluid - not supported
                     break;
+                }
+
+                float inputEnergyPerOneFluid = (targetTemp - acceptTemperature.min) * input.heatCapacity;
+                float outputEnergyPerOneFluid = (targetTemp - output.temperatureRange.min) * output.heatCapacity;
+                if (inputEnergyPerOneFluid <= 0 || outputEnergyPerOneFluid <= 0) {
+                    break; // No heating is possible in this temperature range.
                 }
 
                 // otherwise convert boiler production to a recipe
@@ -284,9 +292,7 @@ internal partial class FactorioDataDeserializer {
                 recipeCrafters.Add(boiler, category);
                 recipe.flags |= RecipeFlags.UsesFluidTemperature;
                 // TODO: input fluid amount now depends on its temperature, using min temperature should be OK for non-modded
-                float inputEnergyPerOneFluid = (targetTemp - acceptTemperature.min) * input.heatCapacity;
                 recipe.ingredients = [new Ingredient(input, boiler.basePower / inputEnergyPerOneFluid) { temperature = acceptTemperature }];
-                float outputEnergyPerOneFluid = (targetTemp - output.temperatureRange.min) * output.heatCapacity;
                 recipe.products = [new Product(output, boiler.basePower / outputEnergyPerOneFluid)];
                 recipe.time = 1f;
                 boiler.baseCraftingSpeed = 1f;

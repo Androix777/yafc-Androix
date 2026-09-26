@@ -242,12 +242,15 @@ public static partial class DataUtils {
         }
     }
 
+    private const string SolverParameters = "solution_feasibility_tolerance:1e-1 small_pivot_threshold:1e-9";
+
     public static Solver CreateSolver() {
         Solver solver = Solver.CreateSolver("GLOP_LINEAR_PROGRAMMING");
         // Relax solver parameters as returning imprecise solution is better than no solution at all
         // It is not like we need 8 digits of precision after all, most computations in YAFC are done in singles
         // see all properties here: https://github.com/google/or-tools/blob/stable/ortools/glop/parameters.proto
-        _ = solver.SetSolverSpecificParametersAsString("solution_feasibility_tolerance:1e-1");
+        // Recipe coefficients can span very different scales; the default small-pivot heuristic can lose precision.
+        _ = solver.SetSolverSpecificParametersAsString(SolverParameters);
         return solver;
     }
 
@@ -258,7 +261,7 @@ public static partial class DataUtils {
             logger.Information("Solution completed in {ElapsedTime}ms with result {result}", time.ElapsedMilliseconds, result);
 
             if (result == Solver.ResultStatus.ABNORMAL) {
-                _ = solver.SetSolverSpecificParametersAsString("random_seed:" + random.Next());
+                _ = solver.SetSolverSpecificParametersAsString(SolverParameters + " random_seed:" + random.Next());
                 continue;
             } /*else
                 VerySlowTryFindBadObjective(solver);*/

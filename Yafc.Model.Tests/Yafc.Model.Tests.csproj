@@ -45,10 +45,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>Data\Mod-fixes\pypostprocessing.prototypes.yafc.lua</TargetPath>
     </ContentWithTargetPath>
+    <ContentWithTargetPath Include="..\Yafc\Data\Mod-fixes\omnimatter_compression.data-final-fixes.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Data\Mod-fixes\omnimatter_compression.data-final-fixes.lua</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="BareMinimumLuaData.lua" />
+    <EmbeddedResource Include="FactorioCompatibilityTests.HeatingBoilersUseMaximumFluidTemperature.lua" />
+    <EmbeddedResource Include="FactorioCompatibilityTests.ResearchCountFormula_UsesInitialLevelInsteadOfPlaceholder.lua" />
     <EmbeddedResource Include="Model\ProductionTableContentTests.lua" />
     <EmbeddedResource Include="Model\ProductionTableTests.Solve_UsesProjectThreadSwitcher_ForInfeasibleLink.lua" />
     <EmbeddedResource Include="Model\RecipeParametersTests.FluidBoilingRecipes_HaveCorrectConsumption.lua" />

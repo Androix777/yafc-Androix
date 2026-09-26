@@ -28,7 +28,11 @@ Date:
         - Always enable the initial Krastorio2 biomass, including with Space Exploration (#696).
         - Treat recommended mod dependencies as optional (#702).
         - Support Factorio 2.1.20 item fuel_categories (#706).
+        - Evaluate technology count_formula at the initial research level instead of assuming 1000 units.
+        - Improve numerical stability for compressed recipes and preserve solver settings when retrying.
         - Set the missing stack size on Py's YAFC-only TURD item for Omni Compression compatibility.
+        - Model Omni Compression's script-controlled recipe and building unlocks, including compression technology requirements.
+        - Correctly model Factorio 2.1 heat-fluid-inside boilers using the fluid's maximum temperature.
 ----------------------------------------------------------------------------------------------------------------------
 Version: 2.20.0
 Date: 17 July 2026

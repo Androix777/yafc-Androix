@@ -32,7 +32,7 @@ internal static class LuaDependentTestHelper {
     /// <c>TestClass.lua</c> will be used for all tests in TestClass, except TestMethod1 and TestMethod2.<br/>
     /// Do not use <c>require</c> in the embedded files.</remarks>
     /// <param name="targetStreamName">The name of the embedded resource to load, if the default name selection does not work for you.</param>
-    internal static Project GetProjectForLua(string targetStreamName = null) {
+    internal static Project GetProjectForLua(string targetStreamName = null, Version factorioVersion = null) {
         // Verify correct non-parallel declaration for tests, to accommodate the singleton analyses.
         StackTrace stack = new();
 
@@ -83,7 +83,7 @@ internal static class LuaDependentTestHelper {
             }
             context.Exec(bytes, "*", "");
 
-            new FactorioDataDeserializer(new(1, 1)).LoadLuaData(context.data, (LuaTable)context.defines["prototypes"], false, helper, new(), null);
+            new FactorioDataDeserializer(factorioVersion ?? new(1, 1)).LoadLuaData(context.data, (LuaTable)context.defines["prototypes"], false, helper, new(), null);
             project = FactorioDataDeserializer.LoadProject(null, helper, new(), false);
         }
 

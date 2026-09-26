@@ -31,6 +31,10 @@ internal partial class FactorioDataDeserializer {
     private void DeserializeRecipe(LuaTable table, ErrorCollector errorCollector) {
         var recipe = DeserializeWithDifficulty<Recipe>(table, "recipe", LoadRecipeData, errorCollector);
 
+        if (table.Get("yafc_additional_technology_unlock", out LuaTable? additionalUnlock)) {
+            recipe.additionalTechnologyUnlock = [.. additionalUnlock.ArrayElements<string>().Select(GetObject<Technology>)];
+        }
+
         if (table["categories"] is LuaTable categoriesTable) { // 2.1
             tryReadCategories(categoriesTable, recipe);
         }
@@ -183,6 +187,15 @@ internal partial class FactorioDataDeserializer {
         technology.enabled = !forceDisable && table.Get("enabled", true);
         technology.time = unit.Get("time", 1f);
         technology.count = unit.Get("count", 1000f);
+        if (unit.Get("count_formula", out string? countFormula)) {
+            // Infinite research is estimated at its initial level, as named by Factorio's -<level> suffix.
+            int suffix = technology.name.LastIndexOf('-');
+            int level = suffix >= 0 && int.TryParse(technology.name.AsSpan(suffix + 1), out int parsedLevel) ? parsedLevel : 1;
+            var variables = table.context.NewTable();
+            variables["L"] = level;
+            variables["l"] = level;
+            technology.count = MathF.Max(1, MathExpression.Evaluate(countFormula, variables));
+        }
 
         if (table.Get("prerequisites", out LuaTable? prerequisitesList)) {
             technology.prerequisites = [.. prerequisitesList.ArrayElements<string>().Select(GetObject<Technology>)];

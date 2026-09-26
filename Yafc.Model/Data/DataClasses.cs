@@ -214,6 +214,8 @@ public class Recipe : RecipeOrTechnology {
     public string[]? allowedModuleCategories { get; internal set; }
     public Technology[] technologyUnlock { get; internal set; } = [];
     public Dictionary<Technology, float> technologyProductivity { get; internal set; } = [];
+    // Script-unlocked recipes can require another technology in addition to the ordinary unlock.
+    public Technology[] additionalTechnologyUnlock { get; internal set; } = [];
     public bool preserveProducts { get; internal set; }
     public bool hidden { get; internal set; }
     public float? maximumProductivity { get; internal set; }
@@ -243,6 +245,10 @@ public class Recipe : RecipeOrTechnology {
 
         if (!enabled) {
             nodes.Add((technologyUnlock, DependencyNode.Flags.TechnologyUnlock));
+        }
+
+        if (additionalTechnologyUnlock.Length > 0) {
+            nodes.Add((additionalTechnologyUnlock, DependencyNode.Flags.TechnologyUnlock));
         }
 
         if (craftingSurfaces != null) {
