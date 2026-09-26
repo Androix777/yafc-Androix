@@ -24,6 +24,10 @@ Date:
     Features:
         - Allow planet selection for production tables, and complain if the selected recipe or entity can't be used there.
     Fixes:
+        - Define LuaHelpers.stage (added in 2.1) as "prototype" (#697).
+        - Always enable the initial Krastorio2 biomass, including with Space Exploration (#696).
+        - Treat recommended mod dependencies as optional (#702).
+        - Support Factorio 2.1.20 item fuel_categories (#706).
 ----------------------------------------------------------------------------------------------------------------------
 Version: 2.20.0
 Date: 17 July 2026
