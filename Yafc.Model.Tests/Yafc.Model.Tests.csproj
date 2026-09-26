@@ -41,6 +41,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <TargetPath>Data\%(Filename)%(Extension)</TargetPath>
     </ContentWithTargetPath>
+    <ContentWithTargetPath Include="..\Yafc\Data\Mod-fixes\pypostprocessing.prototypes.yafc.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>Data\Mod-fixes\pypostprocessing.prototypes.yafc.lua</TargetPath>
+    </ContentWithTargetPath>
   </ItemGroup>
 
   <ItemGroup>

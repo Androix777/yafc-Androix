@@ -28,6 +28,7 @@ Date:
         - Always enable the initial Krastorio2 biomass, including with Space Exploration (#696).
         - Treat recommended mod dependencies as optional (#702).
         - Support Factorio 2.1.20 item fuel_categories (#706).
+        - Set the missing stack size on Py's YAFC-only TURD item for Omni Compression compatibility.
 ----------------------------------------------------------------------------------------------------------------------
 Version: 2.20.0
 Date: 17 July 2026
